@@ -1,0 +1,138 @@
+<!DOCTYPE Html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		 <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Web Whatsapp</title>
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="css/font-awesome.css" type="text/css" />
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet"> 
+		<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+			<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+			<script src="js/respond.js"></script>
+		<![endif]-->
+		<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+	</head>
+<body>
+	
+	<!--header start-->	
+	<header class="header header_inner">
+		<div class="container">
+			<nav class="navbar">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>                        
+			      </button>
+			    </div>
+			    <div class="collapse navbar-collapse pull-right right_nav_bar" id="myNavbar">
+			      <ul class="nav navbar-nav nav_list">
+			      <li ><a href="{% url 'Webap:add_phone' %}" >Add New</a></li>
+			      <li ><a href="{% url 'Webap:send_message' %}" >Send Message</a></li>
+			      {% if request.user %}
+			      <li ><a href="{% url 'Webap:logout' %}" >Logout</a></li>
+			      {% endif %}
+			      
+			        
+			      </ul>
+			    </div>
+			</nav>
+		</div>
+		{% if messages %}
+					<ul class="messages">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+					        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+					        {{ message }}
+					    </li>
+					    {% endfor %}
+					</ul>
+					{% endif %}
+	</header>
+	<!--header end-->
+
+	<!--banner start-->	
+	<section class="banner">
+		<div class="container">
+		
+			<div class="row">
+				<h2>Phone List</h2>
+                      
+						<table>
+						  <tr>
+						    <th>Phone Number</th>
+						    <th>Created on</th>
+						    <th>Updated On</th>
+						  </tr>
+						   {% for data in products %}
+						  <tr>
+						    <td>{{data.phone_number}}</td>
+						    <td>{{data.created_on}}</td>
+						    <td>{{data.updated_on}}</td>
+						  <td><a class="btn btn-default" href="{% url 'Webap:phone_delete' %}?phone_id={{data.id}}"><span class="glyphicon glyphicon-trash"></span></a></td>
+						    
+						  </tr>
+						{% endfor %}		
+						  
+						</table>
+									
+					
+
+				
+			</div>	
+		</div>
+		
+		<div class="copy_right">
+			<p>© 2020  All rights reserved.</p>
+		</div>
+	</section>
+	<!--banner end-->
+
+	
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+ 
+
+{% if l.has_other_pages %}
+  <ul class="pagination">
+    {% if l.has_previous %}
+      <li><a href="?page={{ l.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in l.paginator.page_range %}
+      {% if l.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+      <li><a href="?page={{ l.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %} 
+</body>
+</html>
